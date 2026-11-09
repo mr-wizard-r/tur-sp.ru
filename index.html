@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Туристическое агентство «Сервис Плюс»</title>
+    <script src="https://yandex.ru" type="text/javascript"></script>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --primary-blue: #1a365d;
+            --accent-red: #e53e3e;
+            --tg-color: #2ea6da;
+            --tg-hover: #228cb9;
+            --wa-color: #25d366;
+            --wa-hover: #1ebd55;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #eef2f7 0%, #d9e2ec 100%);
+            color: #333;
+            margin: 0;
+            padding: 40px 0 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            /* Защита от выделения текста по всей странице */
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        /* Разрешаем выделение только для номеров, адресов и ссылок */
+        .selectable, a, .contact-card .value {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+        }
+        .wrapper {
+            max-width: 800px; 
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 15px 50px rgba(15, 23, 42, 0.06);
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        .header {
+            text-align: center;
+            padding: 50px 50px 30px;
+        }
+        /* Логотип увеличен еще сильнее */
+        .logo {
+            max-width: 320px;
+            width: 100%;
+            height: auto;
+            margin-bottom: 25px;
+            user-select: none;
+            -webkit-user-drag: none;
+            pointer-events: none;
+        }
+        h1 {
+            font-size: 26px;
+            color: var(--primary-blue);
+            margin: 0 0 15px 0;
+            line-height: 1.4;
+        }
+        .alert-text {
+            font-size: 16px;
+            color: var(--accent-red);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .info-text {
+            font-size: 15px;
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .info-text a, .faq-answer a {
+            color: #2b6cb0;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .info-text a:hover, .faq-answer a:hover {
+            text-decoration: underline;
+        }
+        
+        .online-booking-card {
+            background: linear-gradient(145deg, #1e3a8a, #0f172a);
+            color: white;
+            margin: 0 50px 35px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
+            text-align: center;
+        }
+        .online-booking-card .section-title-white {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffffff;
+            margin: 0 0 10px 0;
+        }
+        .online-booking-card .status-badge {
+            display: inline-block;
+            background: #22c55e;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            70% { transform: scale(1.03); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        .section-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--primary-blue);
+            text-align: center;
+            margin: 40px 0 20px 0;
+        }
+        
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 14px auto;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            max-width: 400px;
+            width: 100%;
+            transition: filter 0.3s ease, background-color 0.3s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            fill: currentColor;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .btn-tg { background: var(--tg-color); }
+        .btn-tg:hover { background: var(--tg-hover); }
+        .btn-max { background: linear-gradient(90deg, #0084ff 0%, #3a60ff 40%, #8d3eff 100%); }
+        .btn-max:hover { filter: brightness(1.2); }
+        .btn-wa { background: var(--wa-color); }
+        .btn-wa:hover { background: var(--wa-hover); }
+        
+        .faq-container {
+            padding: 0 50px 40px;
+        }
+        .faq-item {
+            border-bottom: 1px solid #edf2f7;
+            padding: 20px 0;
+        }
+        .faq-question {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2d3748;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .faq-icon {
+            font-size: 20px;
+            color: #718096;
+            transition: transform 0.3s ease;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+            color: var(--accent-red);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            font-size: 15px;
+            color: #4a5568;
+            line-height: 1.6;
+            transition: max-height 0.3s ease, padding-top 0.3s ease;
+			user-select: none !important;
+			-webkit-user-select: none !important;
+        }
+		.faq-answer a {
+			user-select: text !important;
+			-webkit-user-select: text !important;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 250px;
+            padding-top: 12px;
+        }
+        
+        .dark-block {
+            background: #2c3e50;
+            color: white;
+            padding: 60px 20px;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .dark-block .section-title {
+            color: white;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+        .contact-cards-container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .contact-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 15px;
+            color: #333;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .contact-card:hover {
+            background: #ffffff;
+            transform: translateY(-2px);
+        }
+        .contact-card .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #718096;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .contact-card .value {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+        
+        .vk-round-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(90deg, #0077ff, #00c6ff, #0077ff);
+            background-size: 200% auto;
+            border-radius: 50%;
+            margin: 20px auto 35px;
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0,119,255,0.4);
+            animation: shine 3s linear infinite;
+        }
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+        
+        .features {
+            text-align: left;
+            max-width: 500px;
+            width: 100%;
+            margin: 30px auto 0;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+        .feature-item {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .feature-icon {
+            font-size: 22px;
+            margin-right: 15px;
+            margin-top: 2px;
+        }
+        .feature-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: #fff;
+        }
+        .feature-desc {
+            font-size: 13px;
+            color: #cbd5e0;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+        
+        #map {
+            width: 100%;
+            max-width: 500px;
+            height: 250px;
+            border-radius: 12px;
+            overflow: hidden;
+            color: #000;
+            margin: 35px auto 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        /* Сетка для навигационных кнопок в подвале */
+        .maps-buttons-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 5px;
+        }
+        .map-link-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            color: #cbd5e0;
+            text-decoration: none;
+            font-size: 12px;
+            padding: 10px 15px;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: background 0.2s, color 0.2s;
+            box-sizing: border-box;
+            font-weight: 500;
+        }
+        .map-link-btn:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        .map-link-full {
+            grid-column: span 2;
+            font-size: 13px;
+        }
+        .footer-address {
+            font-size: 13px;
+            color: #a0aec0;
+            margin-top: 30px;
+        }
+        @media (max-width: 768px) {
+            body { padding: 0; }
+            .wrapper { border-radius: 0; margin-bottom: 0; }
+            .header { padding: 30px 20px 10px; }
+            .online-booking-card { margin: 0 20px 25px; padding: 25px 20px; }
+            .faq-container { padding: 0 20px 20px; }
+            .dark-block { padding: 35px 20px; }
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">
+        <img src="logo.png" alt="Сервис Плюс" class="logo" oncontextmenu="return false;">
+        <h1>Туристическое агентство «Сервис Плюс»:<br>Ваш надёжный партнер в путешествиях</h1>
+        <div class="alert-text">Важно! Сайт временно недоступен.</div>
+        <div class="info-text">
+            <!-- Кликабельный адрес офиса -->
+            Ждём Вас в офисе по адресу: <a href="https://yandex.com/maps/-/CXCJ7KJv" target="_blank" class="selectable">г. Пермь, ул. Монастырская 14, офис 307</a>.<br>
+            Режим работы: пн-пт с 10:00 до 19:00<br>
+            Телефоны: <a href="tel:+73422350102">+7 (342) 235-01-02</a>, <a href="tel:+73422376100">+7 (342) 237-61-00</a>, <a href="tel:+79128870287">+7 (912) 887-02-87</a>, <a href="tel:+79027990030">+7 (902) 799-00-30</a>.<br>
+            <strong>Подберём тур!</strong>
+        </div>
+    </div>
+
+    <div class="online-booking-card">
+        <div class="status-badge">Работаем в штатном режиме</div>
+        <div class="section-title-white">Подбор туров онлайн</div>
+        <div style="font-size:14px; color:#cbd5e0; margin-bottom:25px; line-height:1.5;">
+            Звоните или пишите в мессенджеры. Подберём идеальный тур для Вас.
+        </div>
+        
+        <a href="https://t.me/tourperm" class="btn btn-tg" target="_blank">
+            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.24-5.54 3.65-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.97-.74 3.79-1.65 6.32-2.73 7.57-3.25 3.61-1.48 4.36-1.74 4.85-1.75.11 0 .35.03.5.16.13.1.17.25.18.35-.01.07-.01.19-.02.26z"/></svg>
+            СВЯЗАТЬСЯ С НАМИ
+        </a>
+        
+        <a href="https://max.ru/u/f9LHodD0cOIuQ9-ga56PAR6efshvOY3gzB2G27c3-oRrRCo4uOSj0a2QY4Q" class="btn btn-max" target="_blank">
+            <svg class="btn-icon" viewBox="0 0 100 100" style="width:24px; height:24px; fill:#ffffff;">
+                <path d="M50,11.5 C28.7,11.5 11.5,28.7 11.5,50 C11.5,60.8 16,70.6 23.3,77.6 C22.4,82.4 20.3,87.6 17.5,91.2 C17.1,91.7 17.4,92.5 18.1,92.5 C24.1,92.2 30.6,89.5 35.1,86 C39.7,87.6 44.7,88.5 50,88.5 C71.3,88.5 88.5,71.3 88.5,50 C88.5,28.7 71.3,11.5 50,11.5 Z M50,71.5 C38.1,71.5 28.5,61.9 28.5,50 C28.5,38.1 38.1,28.5 50,28.5 C61.9,28.5 71.5,38.1 71.5,50 C71.5,61.9 61.9,71.5 50,71.5 Z" />
+                <path d="M37,56 C39.5,49 44,43.5 50,42.5 C50.5,42.4 51,42.8 51,43.4 C51,43.8 50.7,44.2 50.3,44.3 C44.9,45.3 40.8,50.3 38.5,56.6 C38.3,57.1 37.7,57.3 37.2,57.1 C36.7,56.9 36.5,56.3 37,56 Z" />
+            </svg>
+            MAX
+        </a>
+        
+        <a href="https://wa.me/79128870287" class="btn btn-wa" target="_blank">
+            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.81 9.81 0 0 0 12.04 2zm5.72 14.05c-.24.69-1.43 1.26-1.95 1.34-.48.07-1.1.13-3.14-.72-2.62-1.09-4.29-3.74-4.42-3.92-.13-.17-.98-1.31-.98-2.5 0-1.19.62-1.77.84-2.01.23-.24.5-.3.66-.3.16 0 .33 0 .47.01.15.01.35-.06.55.42.2.49.69 1.68.75 1.8.06.12.1.27.02.43-.08.16-.12.26-.25.4-.12.15-.26.33-.37.45-.12.13-.25.27-.11.51.14.24.63 1.03 1.35 1.67.93.83 1.71 1.08 1.95 1.2.24.12.38.1.51-.05.13-.15.58-.68.74-.91.16-.23.32-.2.55-.11.23.09 1.48.7 1.73.82.25.12.41.18.47.29.06.11.06.64-.18 1.33z"/></svg>
+            WHATSAPP
+        </a>
+    </div>
+
+    <div class="section-title">Часто задаваемые вопросы</div>
+    <div class="faq-container">
+        <div class="faq-item">
+            <!-- Ссылки на номера внутри ответа FAQ -->
+            <div class="faq-question" onclick="toggleFaq(this)">Сайт не работает, как связаться? <span class="faq-icon">+</span></div>
+            <div class="faq-answer">Мы полностью на связи по телефонам <a href="tel:+73422376100">+7 (342) 237-61-00</a>, <a href="tel:+79128870287">+7 (912) 887-02-87</a> и во всех мессенджерах. Офис работает по обычному графику.</div>
+        </div>
+        <div class="faq-item">
+            <!-- Кликабельная ссылка на группу ВК внутри FAQ -->
+            <div class="faq-question" onclick="toggleFaq(this)">Есть ли группа ВКонтакте? <span class="faq-icon">+</span></div>
+            <div class="faq-answer">Да, наше официальное сообщество доступно по ссылке: <a href="https://vk.com/turspperm" target="_blank">vk.com/turspperm</a>. Там мы публикуем актуальные туры и другие интересные посты.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">Как забронировать тур онлайн? <span class="faq-icon">+</span></div>
+            <div class="faq-answer">Пока сайт недоступен, оставьте заявку по телефону или в мессенджерах.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">Когда сайт станет доступен? <span class="faq-icon">+</span></div>
+            <div class="faq-answer">Ведутся восстановительные работы на стороне крупного хостинг-провайдера Beget. Сайт включится сразу после устранения аварии дата-центра.</div>
+        </div>
+    </div>
+</div>
+
+<div class="dark-block">
+    <div class="section-title">Контакты и связь: мы на связи</div>
+    
+    <div class="contact-cards-container">
+        <a href="tel:+79128870287" class="contact-card">
+            <div class="label">сотовый</div>
+            <div class="value">+7 912 887-02-87</div>
+        </a>
+        
+        <a href="tel:+73422376100" class="contact-card">
+            <div class="label">РАБОЧИЙ</div>
+            <div class="value">+7 342 237-61-00</div>
+        </a>
+        
+        <a href="mailto:servis@permonline.ru" class="contact-card">
+            <div class="label">ЭЛЕКТРОННАЯ ПОЧТА</div>
+            <div class="value" style="font-size:15px;">servis@permonline.ru</div>
+        </a>
+    </div>
+
+    <div style="margin-top: 30px; font-weight: bold;">Мы в социальных сетях</div>
+    <a href="https://vk.com/turspperm" class="vk-round-btn" target="_blank">VK</a>
+
+    <div style="margin-top: 10px; font-weight: bold; margin-bottom:15px;">Наши преимущества</div>
+    <div class="features">
+        <div class="feature-item">
+            <span class="feature-icon">⭐</span>
+            <div>
+                <div class="feature-title">Опыт</div>
+                <div class="feature-desc">Профессионализм и многолетний опыт в подборе туров</div>
+            </div>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">📞</span>
+            <div>
+                <div class="feature-title">Связь</div>
+                <div class="feature-desc">Всегда на связи для консультаций и бронирования</div>
+            </div>
+        </div>
+        <div class="feature-item">
+            <span class="feature-icon">❤️</span>
+            <div>
+                <div class="feature-title">Забота</div>
+                <div class="feature-desc">Индивидуальный подход к каждому клиенту</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="map"></div>
+    
+    <!-- Сетка из трех кнопок навигационных систем под картой -->
+    <div class="maps-buttons-container">
+        <a href="https://yandex.com/maps/-/CXCJ7KJv" class="map-link-btn map-link-full" target="_blank">Открыть в Яндекс Картах</a>
+        <a href="https://2gis.ru/perm/search/%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%20%D0%BF%D0%BB%D1%8E%D1%81%20%D0%BF%D0%B5%D1%80%D0%BC%D1%8C/firm/2252328094666674/56.229225%2C58.014814?m=56.229225%2C58.014814%2F14.8" class="map-link-btn" target="_blank">Открыть в 2ГИС</a>
+        <a href="https://maps.app.goo.gl/mDA8ivr6KYANoHXy6" class="map-link-btn" target="_blank">Открыть в Google Maps</a>
+    </div>
+    
+    <div class="footer-address">📍 <span class="selectable">Г. ПЕРМЬ, УЛ. МОНАСТЫРСКАЯ 14, ОФИС 307</span></div>
+</div>
+
+<script>
+    function toggleFaq(element) {
+        var item = element.parentElement;
+        item.classList.toggle('active');
+    }
+
+    ymaps.ready(init);
+    function init(){
+        var myMap = new ymaps.Map("map", {
+            center: [58.014902, 56.236682],
+            zoom: 16,
+            controls: ['zoomControl']
+        });
+
+        var myPlacemark = new ymaps.Placemark([58.014902, 56.236682], {
+            balloonContentHeader: "<strong>Сервис Плюс</strong>",
+            balloonContentBody: "г. Пермь, ул. Монастырская 14, офис 307<br>Режим работы: пн-пт с 10:00 до 19:00<br>3 этаж, офис 307",
+            hintContent: "ТА Сервис Плюс"
+        }, {
+            preset: 'islands#redDotIcon'
+        });
+
+        myMap.geoObjects.add(myPlacemark);
+        myPlacemark.balloon.open();
+    }
+</script>
+</body>
+</html>
