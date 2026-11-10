@@ -54,14 +54,37 @@
         }
         /* Логотип увеличен еще сильнее */
         .logo {
-            max-width: 320px;
             width: 100%;
             height: auto;
-            margin-bottom: 25px;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
             user-select: none;
             -webkit-user-drag: none;
             pointer-events: none;
         }
+		/* Добавляете этот новый класс для плавного проявления */
+		.logo.visible {
+		    opacity: 1;
+		}
+
+		/* Добавляете этот класс для фиксированной рамки (чтобы сайт не прыгал) */
+		.logo-container {
+		    display: inline-block;
+		    max-width: 320px;
+		    width: 100%;
+		    height: 94px; /* Фиксированная высота для ПК */
+		    margin-bottom: 25px;
+		    background: #f3f4f6; /* Легкий серый фон пока качается картинка */
+		    border-radius: 8px;
+		    overflow: hidden;
+		}
+
+		/* На мобильных экранах уменьшаем высоту рамки, чтобы соответствовать адаптивности */
+		@media (max-width: 768px) {
+		    .logo-container {
+		        height: 70px;
+		    }
+		}
         h1 {
             font-size: 26px;
             color: var(--primary-blue);
@@ -375,7 +398,9 @@
 <body>
 <div class="wrapper">
     <div class="header">
-        <img src="logo.png" alt="Сервис Плюс" class="logo" oncontextmenu="return false;">
+		<div class="logo-container" id="logoBox">
+        <img src="logo.png" alt="Сервис Плюс" class="logo" oncontextmenu="return false;" onload="this.classList.add('visible'); document.getElementById('logoBox').style.background='transparent';">
+			</div>
         <h1>Туристическое агентство «Сервис Плюс»:<br>Ваш надёжный партнер в путешествиях</h1>
         <div class="alert-text">Важно! Сайт временно недоступен.</div>
         <div class="info-text">
