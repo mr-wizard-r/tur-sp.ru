@@ -393,41 +393,29 @@
             .faq-container { padding: 0 20px 20px; }
             .dark-block { padding: 35px 20px; }
         }
-/* Умные прелоадеры (скелетоны) для модулей TourVisor */
-.tv-preloader {
-    width: 100% !important;
-    position: relative;
-    border-radius: 12px;
-    margin-bottom: 35px;
-    box-sizing: border-box;
-}
+        /* Надежные прелоадеры (скелетоны) для TourVisor */
+        .tv-preloader {
+            width: 100% !important;
+            position: relative;
+            border-radius: 12px;
+            margin-bottom: 35px;
+            box-sizing: border-box;
+            /* Бегущая серая скелетон-анимация */
+            background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+            background-size: 200% 100%;
+            animation: tv-skeleton 1.5s infinite;
+        }
 
-/* Если блок пустой — включаем серую бегущую анимацию */
-.tv-preloader:empty {
-    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
-    background-size: 200% 100%;
-    animation: tv-skeleton 1.5s infinite;
-}
+        /* Жестко задаем стартовую высоту боксов под каждый модуль */
+        .preload-search { min-height: 260px; height: 260px; }
+        .preload-slider { min-height: 320px; height: 320px; }
+        .preload-hot { min-height: 600px; height: 600px; }
+        .preload-price { min-height: 750px; height: 750px; }
 
-/* Простые и надежные прелоадеры для TourVisor */
-.tv-preloader {
-    width: 100% !important;
-    position: relative;
-    border-radius: 12px;
-    margin-bottom: 35px;
-    box-sizing: border-box;
-    /* Бегущая серая анимация */
-    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
-    background-size: 200% 100%;
-    animation: tv-skeleton 1.5s infinite;
-}
-
-/* Жестко задаем высоту под каждый модуль */
-.preload-search { min-height: 260px; height: 260px; }
-.preload-slider { min-height: 320px; height: 320px; }
-.preload-hot { min-height: 600px; height: 600px; }
-.preload-price { min-height: 750px; height: 750px; }
-
+        @keyframes tv-skeleton {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
 @keyframes tv-skeleton {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
@@ -488,54 +476,50 @@
     <!-- 1. Основной Поиск туров -->
     <div class="section-title">Поиск и бронирование туров</div>
     <div style="padding: 0 40px; box-sizing: border-box;">
-		<div class="tv-preloader preload-search">
+        <div class="tv-preloader preload-search">
             <div class="tv-search-form tv-moduleid-172647"></div>
-<script type="text/javascript" src="https://tourvisor.ru/module/init.js"></script>
-        
+        </div>
     </div>
 
     <!-- 2. Слайдер -->
     <div class="section-title">Популярные направления</div>
     <div style="padding: 0 40px; box-sizing: border-box;">
-		<div class="tv-preloader preload-slider">
+        <div class="tv-preloader preload-slider">
             <div class="tv-image-slider tv-moduleid-940295"></div>
-<script type="text/javascript" src="https://tourvisor.ru/module/init.js"></script>
-        
+        </div>
     </div>
 
     <!-- 3. Горящие туры -->
     <div class="section-title">Горящие туры</div>
     <div style="padding: 0 40px; box-sizing: border-box;">
-		<div class="tv-preloader preload-hot">
+        <div class="tv-preloader preload-hot">
             <div class="tv-hot-tours tv-moduleid-940294"></div>
-<script type="text/javascript" src="https://tourvisor.ru/module/init.js"></script>
-			<script>
-    // Официальное событие Турвизора: срабатывает, когда ВСЕ модули на странице полностью загружены
-    window.onTourvisorInit = function() {
-        // Находим все прелоадеры на странице и полностью очищаем их фоны и анимации
-        var loaders = document.querySelectorAll('.tv-preloader');
-        loaders.forEach(function(item) {
-            item.style.background = 'transparent';
-            item.style.animation = 'none';
-            item.style.height = 'auto';
-            item.style.minHeight = '0';
-        });
-    };
-</script>
-        
+        </div>
     </div>
 
     <!-- 4. Минимальные цены -->
     <div class="section-title">Календарь минимальных цен</div>
     <div style="padding: 0 40px; box-sizing: border-box;">
-		<div class="tv-preloader preload-price">
+        <div class="tv-preloader preload-price">
             <div class="tv-min-price tv-moduleid-940296"></div>
-<script type="text/javascript" src="https://tourvisor.ru/module/init.js"></script>
         </div>
-    
+    </div>
 
-    <!-- Единый скрипт загрузки для всех модулей сразу -->
-    <script type="text/javascript" src="https://tourvisor.ru/module/init.js"></script>
+    <!-- Единый технический скрипт загрузки для всей страницы -->
+    <script type="text/javascript" src="https://tourvisor.ru"></script>
+
+    <!-- Скрипт очистки прелоадеров после загрузки TourVisor -->
+    <script>
+        window.onTourvisorInit = function() {
+            var loaders = document.querySelectorAll('.tv-preloader');
+            loaders.forEach(function(item) {
+                item.style.background = 'transparent';
+                item.style.animation = 'none';
+                item.style.height = 'auto';
+                item.style.minHeight = '0';
+            });
+        };
+    </script>
     
     <!-- ================= КОНЕЦ БЛОКА TOURVISOR ================= -->
 
