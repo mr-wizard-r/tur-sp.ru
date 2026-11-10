@@ -393,6 +393,25 @@
             .faq-container { padding: 0 20px 20px; }
             .dark-block { padding: 35px 20px; }
         }
+		/* Стили прелоадеров (скелетонов) для модулей TourVisor */
+.tv-preloader {
+    width: 100%;
+    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+    background-size: 200% 100%;
+    animation: tv-skeleton 1.5s infinite;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+/* Задаем фиксированную стартовую высоту под каждый тип модуля, чтобы сайт не прыгал */
+.preload-search { height: 260px; }
+.preload-hot { height: 600px; }
+.preload-price { height: 750px; }
+.preload-slider { height: 320px; }
+
+@keyframes tv-skeleton {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
     </style>
 </head>
 <body>
@@ -438,12 +457,54 @@
         </a>
     </div>
 	
-	    <!-- ВСТАВЛЯЙТЕ КОД ТУРВИЗОРА СЮДА -->
+    <!-- ================= БЛОК МОДУЛЕЙ TOURVISOR ================= -->
+    
+    <!-- 1. Основной Поиск туров -->
     <div class="section-title">Поиск и бронирование туров</div>
-    <div style="padding: 0 40px; margin-bottom: 30px; box-sizing: border-box;">
-	<div class="tv-search-form tv-moduleid-172647"></div>
-	<script type="text/javascript" src="https://tourvisor.ru/module/init.js"></script>
-		</div>
+    <div style="padding: 0 40px; box-sizing: border-box;">
+        <div class="tv-preloader preload-search" id="pre-search">
+            <div class="tv-search-form tv-moduleid-172647"></div>
+        </div>
+    </div>
+
+    <!-- 2. Слайдер -->
+    <div class="section-title">Популярные направления</div>
+    <div style="padding: 0 40px; box-sizing: border-box;">
+        <div class="tv-preloader preload-slider" id="pre-slider">
+            <div class="tv-image-slider tv-moduleid-940295"></div>
+        </div>
+    </div>
+
+    <!-- 3. Горящие туры -->
+    <div class="section-title">Горящие туры</div>
+    <div style="padding: 0 40px; box-sizing: border-box;">
+        <div class="tv-preloader preload-hot" id="pre-hot">
+            <div class="tv-hot-tours tv-moduleid-940294"></div>
+        </div>
+    </div>
+
+    <!-- 4. Минимальные цены -->
+    <div class="section-title">Календарь минимальных цен</div>
+    <div style="padding: 0 40px; box-sizing: border-box;">
+        <div class="tv-preloader preload-price" id="pre-price">
+            <div class="tv-min-price tv-moduleid-940296"></div>
+        </div>
+    </div>
+
+    <!-- Единый скрипт загрузки для всех модулей сразу -->
+    <script type="text/javascript" src="https://tourvisor.ru"></script>
+
+    <!-- Микро-скрипт, который отключает серую анимацию, как только Турвизор построит формы -->
+    <script>
+        window.onTourvisorInit = function() {
+            document.getElementById('pre-search').style.background = 'transparent';
+            document.getElementById('pre-slider').style.background = 'transparent';
+            document.getElementById('pre-hot').style.background = 'transparent';
+            document.getElementById('pre-price').style.background = 'transparent';
+        };
+    </script>
+    
+    <!-- ================= КОНЕЦ БЛОКА TOURVISOR ================= -->
 
     <div class="section-title">Часто задаваемые вопросы</div>
     <div class="faq-container">
