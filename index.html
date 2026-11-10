@@ -410,13 +410,13 @@
 }
 
 /* Задаем стартовую высоту боксов ТОЛЬКО когда они пустые, чтобы сайт не прыгал */
-        .tv-preloader .preload-search:empty { min-height: 260px; }
-        .tv-preloader .preload-slider:empty { min-height: 320px; }
-        .tv-preloader .preload-hot:empty { min-height: 600px; }
-        .tv-preloader .preload-price:empty { min-height: 750px; }
+.tv-preloader .preload-search:empty { min-height: 260px; }
+.tv-preloader .preload-slider:empty { min-height: 320px; }
+.tv-preloader .preload-hot:empty { min-height: 600px; }
+.tv-preloader .preload-price:empty { min-height: 750px; }
 
 /* Как только Турвизор вставляет форму внутрь блока, анимация и ограничения полностью сбрасываются */
-        .tv-preloader:not(:empty) {
+.tv-preloader :not(:empty) {
     background: transparent !important;
     animation: none !important;
     height: auto !important;
