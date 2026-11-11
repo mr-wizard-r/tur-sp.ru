@@ -325,6 +325,14 @@
             margin-right: 15px;
             margin-top: 2px;
         }
+        .heart-icon {
+            transition: filter 0.3s ease, transform 0.3s ease;
+            filter: grayscale(1);
+        }
+        .heart-icon:hover {
+            filter: grayscale(0) saturate(1.3);
+            transform: scale(1.12);
+        }
         .feature-title {
             font-weight: bold;
             font-size: 16px;
@@ -406,15 +414,96 @@
             animation: tv-skeleton 1.5s infinite;
         }
 
-        /* Жестко задаем стартовую высоту боксов под каждый модуль */
-        .preload-search { min-height: 260px; height: 260px; }
-        .preload-slider { min-height: 320px; height: 320px; }
-        .preload-hot { min-height: 600px; height: 600px; }
-        .preload-price { min-height: 750px; height: 750px; }
+        .preload-search { min-height: 260px; }
+        .preload-slider { min-height: 320px; }
+        .preload-hot { min-height: 600px; }
+        .preload-price { min-height: 750px; }
+
+        .tv-preloader [class*="favorit" i],
+        .tv-preloader [class*="heart" i],
+        .tv-preloader [aria-label*="избран" i],
+        .tv-preloader [title*="избран" i] {
+            transition: color 0.3s ease, fill 0.3s ease;
+        }
+        .tv-preloader [class*="favorit" i]:hover,
+        .tv-preloader [class*="heart" i]:hover,
+        .tv-preloader [aria-label*="избран" i]:hover,
+        .tv-preloader [title*="избран" i]:hover {
+            color: var(--accent-red);
+            fill: var(--accent-red);
+        }
+        .tv-preloader [class*="favorit" i] svg,
+        .tv-preloader [class*="heart" i] svg,
+        .tv-preloader [aria-label*="избран" i] svg,
+        .tv-preloader [title*="избран" i] svg {
+            transition: fill 0.3s ease;
+        }
+        .tv-preloader [class*="favorit" i]:hover svg,
+        .tv-preloader [class*="favorit" i]:hover svg path,
+        .tv-preloader [class*="heart" i]:hover svg,
+        .tv-preloader [class*="heart" i]:hover svg path,
+        .tv-preloader [aria-label*="избран" i]:hover svg,
+        .tv-preloader [aria-label*="избран" i]:hover svg path,
+        .tv-preloader [title*="избран" i]:hover svg,
+        .tv-preloader [title*="избран" i]:hover svg path {
+            fill: var(--accent-red);
+        }
+
+        .back-to-top {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.24);
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(8px);
+            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease, background-color 0.25s ease;
+        }
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        .back-to-top:hover {
+            background: #244b7a;
+        }
+        .back-to-top:focus-visible {
+            outline: 3px solid var(--accent-red);
+            outline-offset: 3px;
+        }
+        .back-to-top svg {
+            width: 22px;
+            height: 22px;
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 2.5;
+        }
 
         @keyframes tv-skeleton {
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
+        }
+        @media (max-width: 768px) {
+            .back-to-top {
+                right: 16px;
+                bottom: 16px;
+            }
         }
 
     </style>
@@ -496,9 +585,6 @@
         </div>
     </div>
 
-    <!-- Единый технический скрипт загрузки для всей страницы -->
-    <script type="text/javascript" src="https://tourvisor.ru/module/init.js"></script>
-
     <!-- Скрипт очистки прелоадеров после загрузки TourVisor -->
     <script>
         window.onTourvisorInit = function() {
@@ -511,6 +597,9 @@
             });
         };
     </script>
+
+    <!-- Единый технический скрипт загрузки для всей страницы -->
+    <script type="text/javascript" src="https://tourvisor.ru/module/init.js"></script>
     
     <!-- ================= КОНЕЦ БЛОКА TOURVISOR ================= -->
 
@@ -582,7 +671,7 @@
             </div>
         </div>
         <div class="feature-item">
-            <span class="feature-icon">❤️</span>
+            <span class="feature-icon heart-icon">❤️</span>
             <div>
                 <div class="feature-title">Забота</div>
                 <div class="feature-desc">Индивидуальный подход к каждому клиенту</div>
@@ -602,11 +691,25 @@
     <div class="footer-address">📍 <span class="selectable">Г. ПЕРМЬ, УЛ. МОНАСТЫРСКАЯ 14, ОФИС 307</span></div>
 </div>
 
+<button type="button" class="back-to-top" id="backToTop" aria-label="Наверх" title="Наверх">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
+</button>
+
 <script>
     function toggleFaq(element) {
         var item = element.parentElement;
         item.classList.toggle('active');
     }
+
+    var backToTopButton = document.getElementById('backToTop');
+    function updateBackToTopVisibility() {
+        backToTopButton.classList.toggle('visible', window.scrollY > 300);
+    }
+    window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
+    updateBackToTopVisibility();
+    backToTopButton.addEventListener('click', function() {
+        document.querySelector('.header').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
 </script>
 </body>
 </html>
