@@ -242,7 +242,7 @@
             width: 100%;
             text-align: center;
             box-sizing: border-box;
-            margin: 40px 0 0 0 !important;
+            margin: 0 !important;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -393,13 +393,17 @@
             color: #a0aec0;
             margin-top: 30px;
         }
+        @media (min-width: 769px) {
+            .dark-block { margin-top: 40px !important; }
+        }
         @media (max-width: 768px) {
             body { padding: 0; }
             .wrapper { border-radius: 0; margin-bottom: 0; }
             .header { padding: 30px 20px 10px; }
             .online-booking-card { margin: 0 20px 25px; padding: 25px 20px; }
             .faq-container { padding: 0 20px 20px; }
-            .dark-block { padding: 35px 20px; }
+            .dark-block { padding: 35px 20px; margin-top: 0 !important; }
+            .footer-address { margin-bottom: 56px; }
         }
         /* Надежные прелоадеры (скелетоны) для TourVisor */
         .tv-preloader-wrapper {
@@ -484,6 +488,24 @@
             transform: scale(1.08) !important;
         }
 
+        .TVCartStickyButtonLeft,
+        .TVCartStickyButtonLeft .TVCartPreviewCompact,
+        .TVCartStickyButtonLeft .TVCartPreviewCompactIcon,
+        .TVCartStickyButtonLeft .TVCartPreviewCompactIcon svg,
+        .TVCartStickyButtonLeft .TVCartPreviewCompactIcon svg path {
+            transition: all 0.3s ease-in-out !important;
+        }
+        .TVCartStickyButtonLeft:hover {
+            transform: scale(1.08) !important;
+        }
+        .TVCartStickyButtonLeft:hover .TVCartPreviewCompactIcon,
+        .TVCartStickyButtonLeft:hover .TVCartPreviewCompactIcon svg,
+        .TVCartStickyButtonLeft:hover .TVCartPreviewCompactIcon svg path {
+            color: #e53e3e !important;
+            fill: #e53e3e !important;
+            stroke: #e53e3e !important;
+        }
+
         .back-to-top {
             position: fixed;
             right: 24px;
@@ -536,8 +558,10 @@
         }
         @media (max-width: 768px) {
             .back-to-top {
-                right: 16px;
-                bottom: 16px;
+                right: 12px;
+                bottom: 12px;
+                width: 40px;
+                height: 40px;
             }
         }
 
