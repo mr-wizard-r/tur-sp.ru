@@ -31,6 +31,10 @@
             user-select: none;
             -webkit-user-select: none;
         }
+        html,
+        body {
+            scroll-behavior: smooth !important;
+        }
         /* Разрешаем выделение только для номеров, адресов и ссылок */
         .selectable, a, .contact-card .value {
             user-select: text !important;
@@ -45,7 +49,7 @@
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
-            overflow: hidden;
+            overflow: visible;
             margin-bottom: 40px;
         }
         .header {
@@ -54,13 +58,60 @@
         }
         .section-nav {
             display: flex;
+            position: sticky;
+            top: 0;
+            z-index: 1200;
+            align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 4px;
-            max-width: 720px;
-            margin: 0 auto 20px;
+            width: 100vw;
+            min-height: 56px;
+            margin: 0 0 20px calc(50% - 50vw);
+            padding: 6px max(16px, calc((100vw - 800px) / 2));
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
+            transition: background-color 0.25s ease, box-shadow 0.25s ease;
         }
-        .section-nav a {
+        .section-nav.is-stuck {
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 6px 24px rgba(15, 23, 42, 0.14);
+        }
+        .section-nav-logo {
+            display: flex;
+            flex: 0 0 0;
+            align-items: center;
+            justify-content: center;
+            width: 0;
+            height: 40px;
+            margin-right: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: width 0.3s ease, flex-basis 0.3s ease, margin 0.3s ease, opacity 0.2s ease;
+        }
+        .section-nav-logo img {
+            display: block;
+            width: 136px;
+            height: 40px;
+            object-fit: contain;
+        }
+        .section-nav.is-stuck .section-nav-logo {
+            flex-basis: 136px;
+            width: 136px;
+            margin-right: 8px;
+            opacity: 1;
+        }
+        .section-nav-links {
+            display: flex;
+            flex: 1 1 auto;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .section-nav-links a {
             flex: 0 0 auto;
             padding: 8px 10px;
             border-bottom: 1px solid transparent;
@@ -70,12 +121,37 @@
             font-weight: 600;
             transition: color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
         }
-        .section-nav a:hover {
+        .section-nav-links a:hover {
             color: var(--accent-red);
             border-bottom-color: var(--accent-red);
         }
-        .section-nav a:active {
+        .section-nav-links a:active {
             transform: scale(0.96);
+        }
+        .section-nav-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            border: 1px solid rgba(26, 54, 93, 0.18);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--primary-blue);
+            cursor: pointer;
+        }
+        .section-nav-toggle svg {
+            width: 21px;
+            height: 21px;
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-width: 2;
+        }
+        .header-details {
+            padding: 0 50px 30px;
+            text-align: center;
         }
         #tour-search,
         #directions,
@@ -473,15 +549,55 @@
             .wrapper { border-radius: 0; margin-bottom: 0; }
             .header { padding: 30px 20px 10px; }
             .section-nav {
-                justify-content: flex-start;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                overscroll-behavior-x: contain;
-                scrollbar-width: none;
-                margin: 0 -20px 16px;
-                padding: 0 20px 4px;
+                position: relative;
+                top: auto;
+                justify-content: flex-end;
+                width: 100%;
+                min-height: 54px;
+                margin: 0 0 12px;
+                padding: 6px 20px;
+                background: transparent;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                box-shadow: none;
             }
-            .section-nav::-webkit-scrollbar { display: none; }
+            .section-nav-logo { display: none; }
+            .section-nav-toggle { display: inline-flex; }
+            .section-nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                z-index: 1201;
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                max-height: 0;
+                padding: 0 20px;
+                overflow: hidden;
+                border-bottom: 0 solid rgba(26, 54, 93, 0.12);
+                background: rgba(255, 255, 255, 0.98);
+                box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+                opacity: 0;
+                pointer-events: none;
+                transition: max-height 0.3s ease, opacity 0.2s ease, padding 0.3s ease;
+            }
+            .section-nav.is-open .section-nav-links {
+                max-height: 360px;
+                padding: 8px 20px;
+                border-bottom-width: 1px;
+                opacity: 1;
+                pointer-events: auto;
+            }
+            .section-nav-links a {
+                width: 100%;
+                padding: 12px 4px;
+                border-bottom: 1px solid rgba(26, 54, 93, 0.1);
+                box-sizing: border-box;
+            }
+            .section-nav-links a:last-child { border-bottom: 0; }
+            .header-details { padding: 0 20px 10px; }
             .online-booking-card { margin: 0 20px 25px; padding: 25px 20px; }
             .faq-container { padding: 0 20px 20px; }
             .dark-block { padding: 35px 20px; margin-top: 0 !important; }
@@ -688,6 +804,21 @@
             fill: #e53e3e !important;
         }
 
+        @keyframes tv-favorites-fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .TVModalContainer.TVToursCartWindow.TVFadeIn {
+            animation: tv-favorites-fade-in 0.3s ease both !important;
+        }
+
+        .dark-block > iframe {
+            display: block;
+            width: 100vw !important;
+            max-width: 100vw;
+            flex: 0 0 auto;
+        }
+
         #backToTop.dark-zone {
             background: #ffffff !important;
             color: #1a365d !important;
@@ -711,14 +842,24 @@
             </a>
 			</div>
         <h1>Туристическое агентство «Сервис Плюс»:<br>Ваш надёжный партнер в путешествиях</h1>
+        </div>
         <nav class="section-nav" aria-label="Навигация по странице">
-            <a href="#tour-search">Поиск туров</a>
-            <a href="#directions">Направления</a>
-            <a href="#hot-tours">Горящие туры</a>
-            <a href="#price-calendar">Календарь цен</a>
-            <a href="#faq">F.A.Q.</a>
-            <a href="#contacts">Контакты</a>
+            <a href="https://tur-sp.ru" class="section-nav-logo" aria-label="На главную">
+                <img src="logo.png" alt="Сервис Плюс">
+            </a>
+            <button type="button" class="section-nav-toggle" id="sectionNavToggle" aria-controls="sectionNavLinks" aria-expanded="false" aria-label="Открыть меню">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+            </button>
+            <div class="section-nav-links" id="sectionNavLinks">
+                <a href="#tour-search">Поиск туров</a>
+                <a href="#directions">Направления</a>
+                <a href="#hot-tours">Горящие туры</a>
+                <a href="#price-calendar">Календарь цен</a>
+                <a href="#faq">F.A.Q.</a>
+                <a href="#contacts">Контакты</a>
+            </div>
         </nav>
+        <div class="header-details">
         <div class="alert-text">Важно! Сайт временно недоступен.</div>
         <div class="info-text">
             <!-- Кликабельный адрес офиса -->
@@ -951,6 +1092,50 @@
     backToTopButton.addEventListener('click', function() {
         document.querySelector('.header').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
+
+    var sectionNav = document.querySelector('.section-nav');
+    var sectionNavToggle = document.getElementById('sectionNavToggle');
+    var sectionNavLinks = document.getElementById('sectionNavLinks');
+
+    function updateSectionNavState() {
+        if (!sectionNav) return;
+        var isDesktop = window.innerWidth > 768;
+        sectionNav.classList.toggle('is-stuck', isDesktop && sectionNav.getBoundingClientRect().top <= 0);
+        if (!isDesktop) {
+            sectionNav.classList.remove('is-open');
+            if (sectionNavToggle) sectionNavToggle.setAttribute('aria-expanded', 'false');
+        }
+    }
+
+    if (sectionNav && sectionNavToggle && sectionNavLinks) {
+        sectionNavToggle.addEventListener('click', function() {
+            var isOpen = sectionNav.classList.toggle('is-open');
+            sectionNavToggle.setAttribute('aria-expanded', String(isOpen));
+            sectionNavToggle.setAttribute('aria-label', isOpen ? 'Закрыть меню' : 'Открыть меню');
+        });
+
+        sectionNavLinks.addEventListener('click', function(event) {
+            var link = event.target.closest('a[href^="#"]');
+            if (!link) return;
+
+            var target = document.querySelector(link.getAttribute('href'));
+            if (!target) return;
+
+            event.preventDefault();
+            sectionNav.classList.remove('is-open');
+            sectionNavToggle.setAttribute('aria-expanded', 'false');
+            sectionNavToggle.setAttribute('aria-label', 'Открыть меню');
+
+            var offset = window.innerWidth > 768 ? sectionNav.getBoundingClientRect().height + 12 : 16;
+            var targetTop = target.getBoundingClientRect().top + window.scrollY - offset;
+            window.history.replaceState(null, '', link.getAttribute('href'));
+            window.scrollTo({ top: targetTop, behavior: 'smooth' });
+        });
+
+        window.addEventListener('scroll', updateSectionNavState, { passive: true });
+        window.addEventListener('resize', updateSectionNavState);
+        updateSectionNavState();
+    }
 
     document.addEventListener('DOMContentLoaded', function() {
         var btn = document.getElementById('backToTop');
