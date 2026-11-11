@@ -52,6 +52,39 @@
             text-align: center;
             padding: 50px 50px 30px;
         }
+        .section-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 4px;
+            max-width: 720px;
+            margin: 0 auto 20px;
+        }
+        .section-nav a {
+            flex: 0 0 auto;
+            padding: 8px 10px;
+            border-bottom: 1px solid transparent;
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+        }
+        .section-nav a:hover {
+            color: var(--accent-red);
+            border-bottom-color: var(--accent-red);
+        }
+        .section-nav a:active {
+            transform: scale(0.96);
+        }
+        #tour-search,
+        #directions,
+        #hot-tours,
+        #price-calendar,
+        #faq,
+        #contacts {
+            scroll-margin-top: 16px;
+        }
         /* Логотип увеличен еще сильнее */
         .logo {
             width: 100%;
@@ -402,7 +435,7 @@
             max-width: 500px;
             width: 100%;
             box-sizing: border-box;
-            margin-top: 5px;
+            margin-top: 20px;
         }
         .map-link-btn {
             display: inline-flex;
@@ -439,12 +472,23 @@
             body { padding: 0; }
             .wrapper { border-radius: 0; margin-bottom: 0; }
             .header { padding: 30px 20px 10px; }
+            .section-nav {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                overscroll-behavior-x: contain;
+                scrollbar-width: none;
+                margin: 0 -20px 16px;
+                padding: 0 20px 4px;
+            }
+            .section-nav::-webkit-scrollbar { display: none; }
             .online-booking-card { margin: 0 20px 25px; padding: 25px 20px; }
             .faq-container { padding: 0 20px 20px; }
             .dark-block { padding: 35px 20px; margin-top: 0 !important; }
             .footer-address { margin-bottom: 56px; }
-            .tv-preloader-wrapper.preload-search { margin-bottom: 12px; }
-            .popular-directions-title { margin-top: 24px; }
+            .tv-preloader-wrapper.preload-search { margin-bottom: 0; }
+            .popular-directions-title { margin-top: 16px; }
+            .maps-buttons-container { margin-top: 12px; }
         }
         /* Надежные прелоадеры (скелетоны) для TourVisor */
         .tv-preloader-wrapper {
@@ -505,7 +549,6 @@
         .tv-search-form .TVCartPreviewControl:hover .TVCartPreviewIcon,
         .tv-search-form .TVCartPreviewIcon:hover {
             color: #e53e3e !important;
-            transform: scale(1.08) !important;
         }
         .tv-search-form .TVCartPreviewControl:hover .TVCartPreviewIcon svg,
         .tv-search-form .TVCartPreviewControl:hover .TVCartPreviewIcon svg path,
@@ -513,6 +556,23 @@
         .tv-search-form .TVCartPreviewIcon:hover svg,
         .tv-search-form .TVCartPreviewIcon:hover svg path,
         .tv-search-form .TVCartPreviewIcon:hover svg use {
+            fill: #e53e3e !important;
+            stroke: #e53e3e !important;
+        }
+
+        .tv-search-form .TVSearchFormCartPreview .TVCartPreviewControl,
+        .tv-search-form .TVSearchFormCartPreview .TVCartPreviewTitle,
+        .tv-search-form .TVSearchFormCartPreview .TVCartPreviewIcon,
+        .tv-search-form .TVSearchFormCartPreview .TVCartPreviewIcon svg,
+        .tv-search-form .TVSearchFormCartPreview .TVCartPreviewIcon svg path {
+            transition: color 0.3s ease-in-out, fill 0.3s ease-in-out, stroke 0.3s ease-in-out !important;
+        }
+        .tv-search-form .TVSearchFormCartPreview .TVCartPreviewControl:hover,
+        .tv-search-form .TVSearchFormCartPreview .TVCartPreviewControl:hover .TVCartPreviewTitle,
+        .tv-search-form .TVSearchFormCartPreview .TVCartPreviewControl:hover .TVCartPreviewIcon,
+        .tv-search-form .TVSearchFormCartPreview .TVCartPreviewControl:hover .TVCartPreviewIcon svg,
+        .tv-search-form .TVSearchFormCartPreview .TVCartPreviewControl:hover .TVCartPreviewIcon svg path {
+            color: #e53e3e !important;
             fill: #e53e3e !important;
             stroke: #e53e3e !important;
         }
@@ -536,15 +596,15 @@
         .TVCartStickyButtonLeft .TVCartPreviewCompactIcon svg path {
             transition: all 0.3s ease-in-out !important;
         }
-        .TVCartStickyButtonLeft:hover {
-            transform: scale(1.08) !important;
-        }
         .TVCartStickyButtonLeft:hover .TVCartPreviewCompactIcon,
         .TVCartStickyButtonLeft:hover .TVCartPreviewCompactIcon svg,
         .TVCartStickyButtonLeft:hover .TVCartPreviewCompactIcon svg path {
             color: #e53e3e !important;
             fill: #e53e3e !important;
             stroke: #e53e3e !important;
+        }
+        .TVCartStickyButtonLeft:hover .TVCartPreviewCompactIcon svg {
+            transform: scale(1.15) !important;
         }
 
         .back-to-top {
@@ -651,6 +711,14 @@
             </a>
 			</div>
         <h1>Туристическое агентство «Сервис Плюс»:<br>Ваш надёжный партнер в путешествиях</h1>
+        <nav class="section-nav" aria-label="Навигация по странице">
+            <a href="#tour-search">Поиск туров</a>
+            <a href="#directions">Направления</a>
+            <a href="#hot-tours">Горящие туры</a>
+            <a href="#price-calendar">Календарь цен</a>
+            <a href="#faq">F.A.Q.</a>
+            <a href="#contacts">Контакты</a>
+        </nav>
         <div class="alert-text">Важно! Сайт временно недоступен.</div>
         <div class="info-text">
             <!-- Кликабельный адрес офиса -->
@@ -690,7 +758,7 @@
     <!-- ================= БЛОК МОДУЛЕЙ TOURVISOR ================= -->
     
     <!-- 1. Основной Поиск туров -->
-    <div class="section-title">Поиск и бронирование туров</div>
+    <div id="tour-search" class="section-title">Поиск и бронирование туров</div>
     <div style="padding: 0 40px; box-sizing: border-box;">
         <div class="tv-preloader-wrapper preload-search">
             <div class="tv-search-form tv-moduleid-172647"></div>
@@ -698,7 +766,7 @@
     </div>
 
     <!-- 2. Слайдер -->
-    <div class="section-title popular-directions-title">Популярные направления</div>
+    <div id="directions" class="section-title popular-directions-title">Популярные направления</div>
     <div style="padding: 0 40px; box-sizing: border-box;">
         <div class="tv-preloader-wrapper preload-slider">
             <div class="tv-image-slider tv-moduleid-940295"></div>
@@ -706,7 +774,7 @@
     </div>
 
     <!-- 3. Горящие туры -->
-    <div class="section-title">Горящие туры</div>
+    <div id="hot-tours" class="section-title">Горящие туры</div>
     <div style="padding: 0 40px; box-sizing: border-box;">
         <div class="tv-preloader-wrapper preload-hot">
             <div class="tv-hot-tours tv-moduleid-940294"></div>
@@ -714,7 +782,7 @@
     </div>
 
     <!-- 4. Минимальные цены -->
-    <div class="section-title">Календарь минимальных цен</div>
+    <div id="price-calendar" class="section-title">Календарь минимальных цен</div>
     <div style="padding: 0 40px; box-sizing: border-box;">
         <div class="tv-preloader-wrapper preload-price">
             <div class="tv-min-price tv-moduleid-940296"></div>
@@ -776,7 +844,7 @@
     
     <!-- ================= КОНЕЦ БЛОКА TOURVISOR ================= -->
 
-    <div class="section-title">Часто задаваемые вопросы</div>
+    <div id="faq" class="section-title">Часто задаваемые вопросы</div>
     <div class="faq-container">
         <div class="faq-item">
             <!-- Ссылки на номера внутри ответа FAQ -->
@@ -804,7 +872,7 @@
 
 </div>
 
-<div class="dark-block">
+<div id="contacts" class="dark-block">
     <div class="section-title">Контакты и связь: мы на связи</div>
     
     <div class="contact-cards-container">
