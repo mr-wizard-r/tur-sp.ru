@@ -856,18 +856,39 @@
             transition: opacity 0.3s ease, transform 0.3s ease !important;
             box-shadow: none !important;
             z-index: 100001 !important;
+            display: block !important;
+            visibility: visible !important;
         }
         .TVModalContainer.TVToursCartWindow.TVFade:not(.TVFadeIn):not(.tv-closing) {
             opacity: 0 !important;
             transform: translate(-50%, -50%) scale(0.9) !important;
+            display: none !important;
+            visibility: hidden !important;
         }
         .TVModalContainer.TVToursCartWindow.TVFadeIn {
             display: block !important;
             visibility: visible !important;
+            opacity: 1 !important;
+            transform: translate(-50%, -50%) scale(1) !important;
             animation: tv-favorites-modal-enter 0.3s ease both !important;
         }
         .TVModalContainer.TVToursCartWindow.tv-closing {
             animation: tv-favorites-modal-exit 0.3s ease both !important;
+            pointer-events: none !important;
+        }
+        /* Принудительное восстановление видимости при повторном открытии */
+        .TVModalContainer.TVToursCartWindow.TVFade.TVFadeIn {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            transform: translate(-50%, -50%) scale(1) !important;
+        }
+        /* Удаляем tv-closing после завершения анимации закрытия */
+        .TVModalContainer.TVToursCartWindow.tv-closing.tv-favorites-closed {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            transform: translate(-50%, -50%) scale(0.9) !important;
         }
         .TVModalContainer.TVToursCartWindow .TVSideNav,
         .TVModalContainer.TVToursCartWindow .TVSideNavContent,
@@ -884,7 +905,23 @@
         .TVToursCartWindow .TVSideNav .TVMenuItem {
             box-sizing: border-box !important;
             min-width: 100% !important;
-            padding: 10px 12px !important;
+            padding: 14px 16px !important;
+            margin-bottom: 8px !important;
+            border-radius: 8px !important;
+            font-size: 15px !important;
+            line-height: 1.4 !important;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease !important;
+        }
+        .TVToursCartWindow .TVSideNav .TVMenuItem:not(:last-child) {
+            margin-bottom: 12px !important;
+        }
+        .TVToursCartWindow .TVSideNav .TVMenuItem:not(.TVDisabled):hover {
+            background-color: #f4f6f9 !important;
+            color: #e53e3e !important;
+            transform: translateY(-1px) !important;
+        }
+        .TVToursCartWindow .TVSideNav .TVMenuItem:not(.TVDisabled):active {
+            transform: scale(0.97) !important;
         }
         .TVToursCartWindow .TVCartTabItem,
         .TVToursCartWindow .TVCartControlTab,
@@ -904,10 +941,15 @@
             background-color: #f4f6f9 !important;
             color: #e53e3e !important;
         }
+        .TVToursCartWindow .TVMenuButton,
+        .TVToursCartWindow .TVCartShareButton {
+            border-radius: 12px !important;
+        }
         .TVToursCartWindow .TVMenuButton:hover,
         .TVToursCartWindow .TVCartShareButton:hover {
             background-color: rgba(229, 62, 62, 0.12) !important;
             color: #e53e3e !important;
+            border-radius: 12px !important;
         }
         .TVToursCartWindow .TVCartShareButton:hover svg {
             fill: #e53e3e !important;
@@ -1018,6 +1060,20 @@
         .tv-window-popup .TVManagerLoginModalUIPopup .tv-modal-v2-subtitle {
             display: none !important;
         }
+        /* Конфликт окон: форма входа поверх окна избранного */
+        .TVManagerLoginModalUIPopup,
+        .tv-window-popup .TVManagerLoginModalUIPopup {
+            z-index: 100002 !important;
+            position: relative !important;
+        }
+        .tv-window-popup {
+            z-index: 100002 !important;
+        }
+        /* Принудительное скрытие окна избранного при открытии входа */
+        .TVManagerLoginModalUIPopup.TVLoginOpen,
+        .tv-window-popup.TVLoginOpen .TVManagerLoginModalUIPopup {
+            z-index: 100003 !important;
+        }
         @media (max-width: 768px) {
             .TVModalContainer.TVToursCartWindow {
                 width: calc(100vw - 24px) !important;
@@ -1025,6 +1081,40 @@
                 max-height: calc(100dvh - 24px) !important;
                 overflow-y: auto !important;
             }
+        }
+
+        /* Кнопка «Получить совет турагента» в окне избранного */
+        .TVToursCartWindow .TVToursCartFooterBtn,
+        .TVToursCartWindow .TVToursCartFooterBlock .TVToursCartFooterBtn {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 100% !important;
+            max-width: 300px !important;
+            height: 50px !important;
+            margin: 20px auto 0 !important;
+            border-radius: 30px !important;
+            background: #edf2f5 !important;
+            color: #5c6672 !important;
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            text-decoration: none !important;
+            text-align: center !important;
+            line-height: 50px !important;
+            cursor: pointer !important;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+        }
+        .TVToursCartWindow .TVToursCartFooterBtn:hover {
+            background: #e2e8f0 !important;
+            color: #e53e3e !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12) !important;
+        }
+        .TVToursCartWindow .TVToursCartFooterBtn:active {
+            transform: scale(0.96) !important;
+            background: #e2e8f0 !important;
+            color: #e53e3e !important;
         }
 
     </style>
@@ -1321,6 +1411,31 @@
 
     document.addEventListener('click', animateTourvisorFavoritesClose, true);
 
+    /* Сброс состояний при повторном открытии окна избранного */
+    function resetTourvisorFavoritesModal() {
+        var modal = document.querySelector('.TVToursCartWindow');
+        if (!modal) return;
+        modal.classList.remove('tv-closing', 'tv-favorites-closed');
+        modal.classList.add('TVFadeIn');
+        modal.style.removeProperty('display');
+        modal.style.removeProperty('visibility');
+        modal.style.opacity = '1';
+        modal.style.transform = 'translate(-50%, -50%) scale(1)';
+    }
+
+    /* Наблюдаем за появлением окна избранного и сбрасываем его состояние */
+    var favoritesResetObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === 1 && node.classList && node.classList.contains('TVToursCartWindow')) {
+                    resetTourvisorFavoritesModal();
+                }
+            });
+        });
+    });
+
+    favoritesResetObserver.observe(document.body, { childList: true, subtree: true });
+
     document.addEventListener('click', function(event) {
         var target = event.target;
         if (!(target instanceof Element)) return;
@@ -1336,6 +1451,37 @@
                 }
             }, 0);
         }
+    }, true);
+
+    /* Обработчик кнопки «Вход» из окна избранного — закрываем избранное, открываем форму входа поверх */
+    document.addEventListener('click', function(event) {
+        var target = event.target;
+        if (!(target instanceof Element)) return;
+
+        var loginAction = target.closest('.TVToursCartWindow .TVMenuItem.TVLoginCartMenuItem, .TVToursCartWindow .TVMenuItem.TVLogoutCartMenuItem');
+        if (!loginAction) return;
+
+        var modal = document.querySelector('.TVToursCartWindow');
+        var closeButton = modal && modal.querySelector('.TVClosePopUp');
+
+        if (modal && closeButton) {
+            modal.classList.remove('TVFadeIn');
+            modal.classList.add('tv-closing');
+            window.setTimeout(function() {
+                if (closeButton.isConnected) {
+                    closeButton.dataset.smoothCloseReady = 'true';
+                    closeButton.click();
+                }
+            }, 300);
+        }
+
+        window.setTimeout(function() {
+            var loginPopup = document.querySelector('.TVManagerLoginModalUIPopup, .tv-window-popup .TVManagerLoginModalUIPopup');
+            if (loginPopup) {
+                loginPopup.classList.add('TVLoginOpen');
+                loginPopup.style.zIndex = '100003';
+            }
+        }, 350);
     }, true);
 
     var sectionNav = document.querySelector('.section-nav');
