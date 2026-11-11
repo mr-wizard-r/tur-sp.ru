@@ -402,50 +402,49 @@
             .dark-block { padding: 35px 20px; }
         }
         /* Надежные прелоадеры (скелетоны) для TourVisor */
-        .tv-preloader {
-            width: 100% !important;
+        .tv-preloader-wrapper {
+            width: 100%;
             position: relative;
-            border-radius: 12px;
-            margin-bottom: 35px;
-            box-sizing: border-box;
-            /* Бегущая серая скелетон-анимация */
             background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
             background-size: 200% 100%;
             animation: tv-skeleton 1.5s infinite;
+            border-radius: 12px;
+            margin-bottom: 35px;
+            box-sizing: border-box;
         }
 
-        .preload-search { min-height: 260px; }
-        .preload-slider { min-height: 320px; }
-        .preload-hot { min-height: 600px; }
-        .preload-price { min-height: 750px; }
+        .tv-preloader-wrapper.preload-search { min-height: 260px; height: 260px; }
+        .tv-preloader-wrapper.preload-slider { min-height: 320px; height: 320px; }
+        .tv-preloader-wrapper.preload-hot { min-height: 600px; height: 600px; }
+        .tv-preloader-wrapper.preload-price { min-height: 750px; height: 750px; }
 
-        .tv-preloader [class*="favorit" i],
-        .tv-preloader [class*="heart" i],
-        .tv-preloader [aria-label*="избран" i],
-        .tv-preloader [title*="избран" i] {
+        .tv-preloader-wrapper [class*="favorit" i],
+        .tv-preloader-wrapper [class*="heart" i],
+        .tv-preloader-wrapper [aria-label*="избран" i],
+        .tv-preloader-wrapper [title*="избран" i] {
             transition: color 0.3s ease, fill 0.3s ease;
         }
-        .tv-preloader [class*="favorit" i]:hover,
-        .tv-preloader [class*="heart" i]:hover,
-        .tv-preloader [aria-label*="избран" i]:hover,
-        .tv-preloader [title*="избран" i]:hover {
+        .tv-preloader-wrapper [class*="favorit" i]:hover,
+        .tv-preloader-wrapper [class*="heart" i]:hover,
+        .tv-preloader-wrapper [aria-label*="избран" i]:hover,
+        .tv-preloader-wrapper [title*="избран" i]:hover {
             color: var(--accent-red);
             fill: var(--accent-red);
         }
-        .tv-preloader [class*="favorit" i] svg,
-        .tv-preloader [class*="heart" i] svg,
-        .tv-preloader [aria-label*="избран" i] svg,
-        .tv-preloader [title*="избран" i] svg {
+        .tv-preloader-wrapper [class*="favorit" i] svg,
+        .tv-preloader-wrapper [class*="heart" i] svg,
+        .tv-preloader-wrapper [aria-label*="избран" i] svg,
+        .tv-preloader-wrapper [title*="избран" i] svg {
             transition: fill 0.3s ease;
         }
-        .tv-preloader [class*="favorit" i]:hover svg,
-        .tv-preloader [class*="favorit" i]:hover svg path,
-        .tv-preloader [class*="heart" i]:hover svg,
-        .tv-preloader [class*="heart" i]:hover svg path,
-        .tv-preloader [aria-label*="избран" i]:hover svg,
-        .tv-preloader [aria-label*="избран" i]:hover svg path,
-        .tv-preloader [title*="избран" i]:hover svg,
-        .tv-preloader [title*="избран" i]:hover svg path {
+        .tv-preloader-wrapper [class*="favorit" i]:hover svg,
+        .tv-preloader-wrapper [class*="favorit" i]:hover svg path,
+        .tv-preloader-wrapper [class*="heart" i]:hover svg,
+        .tv-preloader-wrapper [class*="heart" i]:hover svg path,
+        .tv-preloader-wrapper [aria-label*="избран" i]:hover svg,
+        .tv-preloader-wrapper [aria-label*="избран" i]:hover svg path,
+        .tv-preloader-wrapper [title*="избран" i]:hover svg,
+        .tv-preloader-wrapper [title*="избран" i]:hover svg path {
             fill: var(--accent-red);
         }
 
@@ -506,6 +505,31 @@
             }
         }
 
+        /* Фирменный плавный ховер для сердечка Турвизора */
+        .tv-hot-tours .tv-hotel-fav,
+        .tv-image-slider .tv-slider-fav,
+        .tv-search-form .tv-fav-icon {
+            transition: color 0.3s ease, transform 0.2s ease !important;
+        }
+        .tv-hot-tours .tv-hotel-fav:hover,
+        .tv-image-slider .tv-slider-fav:hover,
+        .tv-search-form .tv-fav-icon:hover {
+            color: #e53e3e !important;
+            transform: scale(1.15);
+        }
+
+        #backToTop.dark-zone {
+            background: #e53e3e !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+        }
+        #backToTop.dark-zone:hover {
+            background: #ffffff !important;
+            color: #e53e3e !important;
+            border-color: #e53e3e !important;
+        }
+
     </style>
 </head>
 <body>
@@ -556,7 +580,7 @@
     <!-- 1. Основной Поиск туров -->
     <div class="section-title">Поиск и бронирование туров</div>
     <div style="padding: 0 40px; box-sizing: border-box;">
-        <div class="tv-preloader preload-search">
+        <div class="tv-preloader-wrapper preload-search">
             <div class="tv-search-form tv-moduleid-172647"></div>
         </div>
     </div>
@@ -564,7 +588,7 @@
     <!-- 2. Слайдер -->
     <div class="section-title">Популярные направления</div>
     <div style="padding: 0 40px; box-sizing: border-box;">
-        <div class="tv-preloader preload-slider">
+        <div class="tv-preloader-wrapper preload-slider">
             <div class="tv-image-slider tv-moduleid-940295"></div>
         </div>
     </div>
@@ -572,7 +596,7 @@
     <!-- 3. Горящие туры -->
     <div class="section-title">Горящие туры</div>
     <div style="padding: 0 40px; box-sizing: border-box;">
-        <div class="tv-preloader preload-hot">
+        <div class="tv-preloader-wrapper preload-hot">
             <div class="tv-hot-tours tv-moduleid-940294"></div>
         </div>
     </div>
@@ -580,26 +604,34 @@
     <!-- 4. Минимальные цены -->
     <div class="section-title">Календарь минимальных цен</div>
     <div style="padding: 0 40px; box-sizing: border-box;">
-        <div class="tv-preloader preload-price">
+        <div class="tv-preloader-wrapper preload-price">
             <div class="tv-min-price tv-moduleid-940296"></div>
         </div>
     </div>
 
     <!-- Скрипт очистки прелоадеров после загрузки TourVisor -->
     <script>
-        window.onTourvisorInit = function() {
-            var loaders = document.querySelectorAll('.tv-preloader');
+        function clearTourvisorPreloaders(expandModules) {
+            var loaders = document.querySelectorAll('.tv-preloader-wrapper');
             loaders.forEach(function(item) {
-                item.style.background = 'transparent';
-                item.style.animation = 'none';
-                item.style.height = 'auto';
-                item.style.minHeight = '0';
+                item.style.setProperty('background', 'transparent', 'important');
+                item.style.setProperty('animation', 'none', 'important');
+                if (expandModules) {
+                    item.style.setProperty('height', 'auto', 'important');
+                    item.style.setProperty('min-height', '0', 'important');
+                }
             });
+        }
+        window.onTourvisorInit = function() {
+            clearTourvisorPreloaders(true);
         };
+        window.setTimeout(function() {
+            clearTourvisorPreloaders(false);
+        }, 30000);
     </script>
 
     <!-- Единый технический скрипт загрузки для всей страницы -->
-    <script type="text/javascript" src="https://tourvisor.ru/module/init.js"></script>
+    <script type="text/javascript" src="https://tourvisor.ru/module/init.js" onerror="clearTourvisorPreloaders(false)"></script>
     
     <!-- ================= КОНЕЦ БЛОКА TOURVISOR ================= -->
 
@@ -709,6 +741,24 @@
     updateBackToTopVisibility();
     backToTopButton.addEventListener('click', function() {
         document.querySelector('.header').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var btn = document.getElementById('backToTop');
+        var footer = document.querySelector('.dark-block');
+
+        if (btn && footer) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    btn.classList.toggle('dark-zone', entry.isIntersecting);
+                });
+            }, {
+                rootMargin: '0px 0px -10px 0px',
+                threshold: 0.1
+            });
+
+            observer.observe(footer);
+        }
     });
 </script>
 </body>
