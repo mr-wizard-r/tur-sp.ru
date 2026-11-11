@@ -414,10 +414,10 @@
             box-sizing: border-box;
         }
 
-        .tv-preloader-wrapper.preload-search { min-height: 480px; }
-        .tv-preloader-wrapper.preload-slider { min-height: 240px; }
-        .tv-preloader-wrapper.preload-hot { min-height: 570px; }
-        .tv-preloader-wrapper.preload-price { min-height: 990px; }
+        .tv-preloader-wrapper.preload-search { min-height: 490px; }
+        .tv-preloader-wrapper.preload-slider { min-height: 250px; }
+        .tv-preloader-wrapper.preload-hot { min-height: 580px; }
+        .tv-preloader-wrapper.preload-price { min-height: 1003px; }
 
         .tv-preloader-wrapper [class*="favorit" i],
         .tv-preloader-wrapper [class*="heart" i],
@@ -470,6 +470,18 @@
         .tv-search-form .TVCartPreviewIcon:hover svg use {
             fill: #e53e3e !important;
             stroke: #e53e3e !important;
+        }
+
+        [class*="fav"] {
+            transition: all 0.3s ease-in-out !important;
+        }
+        [class*="fav"]:hover,
+        [class*="fav"]:hover svg,
+        [class*="fav"]:hover path {
+            color: #e53e3e !important;
+            fill: #e53e3e !important;
+            stroke: #e53e3e !important;
+            transform: scale(1.08) !important;
         }
 
         .back-to-top {
