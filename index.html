@@ -414,10 +414,10 @@
             box-sizing: border-box;
         }
 
-        .tv-preloader-wrapper.preload-search { min-height: 260px; }
-        .tv-preloader-wrapper.preload-slider { min-height: 320px; }
-        .tv-preloader-wrapper.preload-hot { min-height: 600px; }
-        .tv-preloader-wrapper.preload-price { min-height: 750px; }
+        .tv-preloader-wrapper.preload-search { min-height: 500px; }
+        .tv-preloader-wrapper.preload-slider { min-height: 260px; }
+        .tv-preloader-wrapper.preload-hot { min-height: 590px; }
+        .tv-preloader-wrapper.preload-price { min-height: 1010px; }
 
         .tv-preloader-wrapper [class*="favorit" i],
         .tv-preloader-wrapper [class*="heart" i],
@@ -447,6 +447,25 @@
         .tv-preloader-wrapper [title*="избран" i]:hover svg,
         .tv-preloader-wrapper [title*="избран" i]:hover svg path {
             fill: var(--accent-red);
+        }
+
+        .tv-search-form .TVCartPreviewControl,
+        .tv-search-form .TVCartPreviewIcon,
+        .tv-search-form .TVCartPreviewIcon svg {
+            transition: color 0.3s ease, fill 0.3s ease, stroke 0.3s ease, transform 0.2s ease !important;
+        }
+        .tv-search-form .TVCartPreviewControl:hover,
+        .tv-search-form .TVCartPreviewControl:hover .TVCartPreviewIcon,
+        .tv-search-form .TVCartPreviewIcon:hover {
+            color: #e53e3e !important;
+            transform: scale(1.05) !important;
+        }
+        .tv-search-form .TVCartPreviewControl:hover .TVCartPreviewIcon svg,
+        .tv-search-form .TVCartPreviewControl:hover .TVCartPreviewIcon svg path,
+        .tv-search-form .TVCartPreviewIcon:hover svg,
+        .tv-search-form .TVCartPreviewIcon:hover svg path {
+            fill: #e53e3e !important;
+            stroke: #e53e3e !important;
         }
 
         .back-to-top {
