@@ -405,6 +405,7 @@
         .tv-preloader-wrapper {
             width: 100%;
             position: relative;
+            clear: both;
             background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
             background-size: 200% 100%;
             animation: tv-skeleton 1.5s infinite;
@@ -413,10 +414,10 @@
             box-sizing: border-box;
         }
 
-        .tv-preloader-wrapper.preload-search { min-height: 260px; height: 260px; }
-        .tv-preloader-wrapper.preload-slider { min-height: 320px; height: 320px; }
-        .tv-preloader-wrapper.preload-hot { min-height: 600px; height: 600px; }
-        .tv-preloader-wrapper.preload-price { min-height: 750px; height: 750px; }
+        .tv-preloader-wrapper.preload-search { min-height: 260px; }
+        .tv-preloader-wrapper.preload-slider { min-height: 320px; }
+        .tv-preloader-wrapper.preload-hot { min-height: 600px; }
+        .tv-preloader-wrapper.preload-price { min-height: 750px; }
 
         .tv-preloader-wrapper [class*="favorit" i],
         .tv-preloader-wrapper [class*="heart" i],
@@ -509,25 +510,34 @@
         .tv-hot-tours .tv-hotel-fav,
         .tv-image-slider .tv-slider-fav,
         .tv-search-form .tv-fav-icon {
-            transition: color 0.3s ease, transform 0.2s ease !important;
+            transition: color 0.3s ease, fill 0.3s ease, transform 0.2s ease !important;
         }
         .tv-hot-tours .tv-hotel-fav:hover,
         .tv-image-slider .tv-slider-fav:hover,
         .tv-search-form .tv-fav-icon:hover {
             color: #e53e3e !important;
-            transform: scale(1.15);
+            fill: #e53e3e !important;
+            transform: scale(1.15) !important;
+        }
+        .tv-hot-tours .tv-hotel-fav:hover svg,
+        .tv-hot-tours .tv-hotel-fav:hover svg path,
+        .tv-image-slider .tv-slider-fav:hover svg,
+        .tv-image-slider .tv-slider-fav:hover svg path,
+        .tv-search-form .tv-fav-icon:hover svg,
+        .tv-search-form .tv-fav-icon:hover svg path {
+            fill: #e53e3e !important;
         }
 
         #backToTop.dark-zone {
-            background: #e53e3e !important;
-            color: #ffffff !important;
+            background: #ffffff !important;
+            color: #1a365d !important;
             border: 2px solid #ffffff !important;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
         }
         #backToTop.dark-zone:hover {
-            background: #ffffff !important;
-            color: #e53e3e !important;
-            border-color: #e53e3e !important;
+            background: #f4f6f9 !important;
+            color: #1a365d !important;
+            border-color: #ffffff !important;
         }
 
     </style>
@@ -611,27 +621,56 @@
 
     <!-- Скрипт очистки прелоадеров после загрузки TourVisor -->
     <script>
-        function clearTourvisorPreloaders(expandModules) {
+        var tourvisorObservers = [];
+
+        function clearTourvisorPreloader(wrapper) {
+            wrapper.style.setProperty('background', 'transparent', 'important');
+            wrapper.style.setProperty('animation', 'none', 'important');
+            wrapper.style.setProperty('height', 'auto', 'important');
+        }
+
+        function clearTourvisorPreloaders() {
             var loaders = document.querySelectorAll('.tv-preloader-wrapper');
             loaders.forEach(function(item) {
-                item.style.setProperty('background', 'transparent', 'important');
-                item.style.setProperty('animation', 'none', 'important');
-                if (expandModules) {
-                    item.style.setProperty('height', 'auto', 'important');
-                    item.style.setProperty('min-height', '0', 'important');
+                clearTourvisorPreloader(item);
+            });
+            tourvisorObservers.forEach(function(observer) {
+                observer.disconnect();
+            });
+            tourvisorObservers = [];
+        }
+
+        function hasTourvisorContent(wrapper, mount) {
+            if (mount && wrapper.contains(mount)) {
+                return mount.childElementCount > 0 || mount.textContent.trim().length > 0;
+            }
+            return wrapper.children.length > 0;
+        }
+
+        document.querySelectorAll('.tv-preloader-wrapper').forEach(function(wrapper) {
+            var mount = wrapper.firstElementChild;
+            var observer = new MutationObserver(function() {
+                if (hasTourvisorContent(wrapper, mount)) {
+                    clearTourvisorPreloader(wrapper);
+                    observer.disconnect();
                 }
             });
-        }
-        window.onTourvisorInit = function() {
-            clearTourvisorPreloaders(true);
-        };
-        window.setTimeout(function() {
-            clearTourvisorPreloaders(false);
-        }, 30000);
+
+            observer.observe(wrapper, { childList: true, subtree: true, characterData: true });
+            tourvisorObservers.push(observer);
+
+            if (hasTourvisorContent(wrapper, mount)) {
+                clearTourvisorPreloader(wrapper);
+                observer.disconnect();
+            }
+        });
+
+        window.onTourvisorInit = clearTourvisorPreloaders;
+        window.setTimeout(clearTourvisorPreloaders, 30000);
     </script>
 
     <!-- Единый технический скрипт загрузки для всей страницы -->
-    <script type="text/javascript" src="https://tourvisor.ru/module/init.js" onerror="clearTourvisorPreloaders(false)"></script>
+    <script type="text/javascript" src="https://tourvisor.ru/module/init.js" onerror="clearTourvisorPreloaders()"></script>
     
     <!-- ================= КОНЕЦ БЛОКА TOURVISOR ================= -->
 
