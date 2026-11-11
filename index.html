@@ -295,17 +295,22 @@
         .map-link-btn:active,
         .faq-question:active,
         .back-to-top:active,
-        [role="button"]:active,
-        [onclick]:active,
         .TVCartStickyButtonLeft:active,
         .tv-preloader-wrapper .TVMainSelect:active,
         .tv-preloader-wrapper .TVAddSelect:active,
         .tv-preloader-wrapper .TVStarsSelectItem:active,
         .tv-preloader-wrapper .TVSearchButton:active,
         .tv-preloader-wrapper .TVCartPreviewControl:active,
-        .tv-preloader-wrapper button:active,
-        .tv-preloader-wrapper [role="button"]:active,
-        .tv-preloader-wrapper [onclick]:active {
+        .TVResultToolbarFloat [class*="Button"]:active,
+        .TVResultToolbarFloat [class*="Favorite"]:active,
+        .TVResultToolbarFloat [class*="Share"]:active,
+        .TVResultToolbarFloat [class*="Sort"]:active,
+        .TVResultToolbarFloat [class*="Group"]:active,
+        .TVResultToolbarFloat [class*="Map"]:active,
+        .TVResultToolbarFloat .TVResultPriceButton:active,
+        .TVToursCartWindow .TVCartTabItem:active,
+        .TVToursCartWindow .TVMenuButton:active,
+        .TVToursCartWindow .TVCartShareButton:active {
             transform: scale(0.96) !important;
             transition: transform 0.1s ease !important;
         }
@@ -575,13 +580,13 @@
                 gap: 0;
                 max-height: 0;
                 padding: 0 20px;
-                overflow: hidden;
+                overflow: visible;
                 border-bottom: 0 solid rgba(26, 54, 93, 0.12);
                 background: rgba(255, 255, 255, 0.98);
                 box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
                 opacity: 0;
                 pointer-events: none;
-                transition: max-height 0.3s ease, opacity 0.2s ease, padding 0.3s ease;
+                transition: max-height 0.3s ease, opacity 0.2s ease, padding 0.3s ease, box-shadow 0.3s ease;
             }
             .section-nav.is-open .section-nav-links {
                 max-height: 360px;
@@ -589,6 +594,7 @@
                 border-bottom-width: 1px;
                 opacity: 1;
                 pointer-events: auto;
+                box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14) !important;
             }
             .section-nav-links a {
                 width: 100%;
@@ -845,13 +851,19 @@
             left: 50% !important;
             right: auto !important;
             margin: 0 !important;
-            transform: translate(-50%, -50%) scale(0.9);
-            opacity: 0;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
             transition: opacity 0.3s ease, transform 0.3s ease !important;
             box-shadow: none !important;
             z-index: 100001 !important;
         }
+        .TVModalContainer.TVToursCartWindow.TVFade:not(.TVFadeIn):not(.tv-closing) {
+            opacity: 0 !important;
+            transform: translate(-50%, -50%) scale(0.9) !important;
+        }
         .TVModalContainer.TVToursCartWindow.TVFadeIn {
+            display: block !important;
+            visibility: visible !important;
             animation: tv-favorites-modal-enter 0.3s ease both !important;
         }
         .TVModalContainer.TVToursCartWindow.tv-closing {
@@ -861,6 +873,18 @@
         .TVModalContainer.TVToursCartWindow .TVSideNavContent,
         .TVModalContainer.TVToursCartWindow .TVSideNavOverlay {
             box-shadow: none !important;
+        }
+        body:has(.TVToursCartWindow.TVFadeIn) .TVSideNavOverlay {
+            background: transparent !important;
+            background-color: transparent !important;
+            background-image: none !important;
+            opacity: 0 !important;
+            box-shadow: none !important;
+        }
+        .TVToursCartWindow .TVSideNav .TVMenuItem {
+            box-sizing: border-box !important;
+            min-width: 100% !important;
+            padding: 10px 12px !important;
         }
         .TVToursCartWindow .TVCartTabItem,
         .TVToursCartWindow .TVCartControlTab,
@@ -887,6 +911,19 @@
         }
         .TVToursCartWindow .TVCartShareButton:hover svg {
             fill: #e53e3e !important;
+        }
+        .TVToursCartWindow .TVCartMenuBlock .TVCartShareLink {
+            padding-right: 12px !important;
+        }
+        .TVToursCartWindow .TVCartMenuBlock .TVCartShareLink:hover,
+        .TVToursCartWindow .TVCartMenuBlock .TVCartShareLink:hover svg,
+        .TVToursCartWindow .TVCartMenuBlock .TVCartShareLink:hover svg path,
+        .TVToursCartWindow .TVSideNav .TVMenuItem.TVShareLinkMenuItem:hover,
+        .TVToursCartWindow .TVSideNav .TVMenuItem.TVShareLinkMenuItem:hover svg,
+        .TVToursCartWindow .TVSideNav .TVMenuItem.TVShareLinkMenuItem:hover svg path {
+            color: #e53e3e !important;
+            fill: #e53e3e !important;
+            stroke: #e53e3e !important;
         }
         .TVToursCartWindow .TVMenuItem.TVShareLinkMenuItem:not(.TVDisabled):hover,
         .TVToursCartWindow .TVMenuItem.TVUpdatePriceMenuItem:not(.TVDisabled):hover,
@@ -920,24 +957,61 @@
             color: #e53e3e !important;
             fill: #e53e3e !important;
         }
-        .tv-search-form .TVHotelListWithTabs .TVHotelListFilterTab:active,
-        .TVResultToolbarFloat [class*="Button"]:active,
-        .TVResultToolbarFloat [class*="Favorite"]:active,
-        .TVResultToolbarFloat [class*="Share"]:active {
-            transform: scale(0.96) !important;
-            transition: transform 0.1s ease !important;
-        }
         .TVResultToolbarFloat.TVFixed {
             display: none !important;
         }
+        .tv-search-form .TVHotelListWithTabs .TVHotelListFilterTab:active {
+            transform: scale(0.96) !important;
+            transition: transform 0.1s ease !important;
+        }
+        /* Ховер для ссылок отеля в выдаче туров: Об отеле, Отзывы, Карта */
+        .TVHotelResulItemAbout,
+        .TVHotelResulItemReviews,
+        .TVHotelResulItemMap {
+            transition: color 0.25s ease-in-out, fill 0.25s ease-in-out, transform 0.15s ease !important;
+        }
+        .TVHotelResulItemAbout:hover,
+        .TVHotelResulItemReviews:hover,
+        .TVHotelResulItemMap:hover {
+            color: #e53e3e !important;
+            fill: #e53e3e !important;
+            transform: translateY(-1px) !important;
+        }
+        .TVHotelResulItemAbout:hover svg,
+        .TVHotelResulItemReviews:hover svg,
+        .TVHotelResulItemMap:hover svg,
+        .TVHotelResulItemAbout:hover svg path,
+        .TVHotelResulItemReviews:hover svg path,
+        .TVHotelResulItemMap:hover svg path {
+            fill: #e53e3e !important;
+            stroke: #e53e3e !important;
+        }
+        /* Ховер/актив для фильтра курортов */
+        .TVTreeResorts .TVCheckBox,
+        .TVTreeResorts .TVTreeListNav,
+        .TVTreeResorts .TVTreeContainer .TreeListItem {
+            transition: background-color 0.2s ease, color 0.2s ease !important;
+        }
+        .TVTreeResorts .TVCheckBox:hover,
+        .TVTreeResorts .TVTreeListNav:hover,
+        .TVTreeResorts .TVTreeContainer .TreeListItem:hover {
+            background-color: #f4f6f9 !important;
+            color: #e53e3e !important;
+        }
+        .TVTreeResorts .TVCheckBox:active,
+        .TVTreeResorts .TVTreeListNav:active,
+        .TVTreeResorts .TVTreeContainer .TreeListItem:active {
+            transform: scale(0.96) !important;
+            transition: transform 0.1s ease !important;
+        }
+        /* Toolbar актив — только конкретные элементы, без общих дочерних селекторов */
         .TVResultToolbarFloat [class*="Button"]:active,
         .TVResultToolbarFloat [class*="Favorite"]:active,
         .TVResultToolbarFloat [class*="Share"]:active,
         .TVResultToolbarFloat [class*="Sort"]:active,
         .TVResultToolbarFloat [class*="Group"]:active,
         .TVResultToolbarFloat [class*="Map"]:active,
-        .TVResultToolbarFloat .TVResultPriceButton:active,
-        .TVResultToolbarFloat .TVResultToolbarActions > *:active {
+        .TVResultToolbarFloat .TVResultPriceButton:active {
             transform: scale(0.96) !important;
             transition: transform 0.1s ease !important;
         }
@@ -1246,6 +1320,23 @@
     }
 
     document.addEventListener('click', animateTourvisorFavoritesClose, true);
+
+    document.addEventListener('click', function(event) {
+        var target = event.target;
+        if (!(target instanceof Element)) return;
+
+        var mapAction = target.closest('.TVToursCartWindow .TVMenuItem.TVMapCartMenuItem:not(.TVDisabled)');
+        if (!mapAction) return;
+
+        var closeButton = mapAction.closest('.TVToursCartWindow').querySelector('.TVClosePopUp');
+        if (closeButton) {
+            window.setTimeout(function() {
+                if (closeButton.isConnected && !mapAction.closest('.TVToursCartWindow').classList.contains('tv-closing')) {
+                    closeButton.click();
+                }
+            }, 0);
+        }
+    }, true);
 
     var sectionNav = document.querySelector('.section-nav');
     var sectionNavToggle = document.getElementById('sectionNavToggle');
